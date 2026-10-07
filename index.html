@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Resort Island Art Styles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: a single column of full-width before/after sliders, one per camera view, grouped by time of day.
+   Deliberately dark-only: the renders are judged on a dark ground, like a game screen. */
+:root {
+  --sea: #0f1d26;        /* page ground */
+  --deck: #172a35;       /* raised panels */
+  --rope: #2b4452;       /* hairlines and borders */
+  --foam: #e9eef0;       /* main text */
+  --mist: #9fb2bb;       /* secondary text */
+  --sand: #e8c88a;       /* accent: the divider and active controls */
+  --coral: #f07a5f;      /* low-poly label */
+  --lagoon: #6fd0d6;     /* voxel label */
+  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body: "Atkinson Hyperlegible", "Helvetica Neue", Arial, system-ui, sans-serif;
+  color-scheme: dark;
+}
+body { background: var(--sea); color: var(--foam); font: 16px/1.55 var(--body); }
+.wrap { max-width: 1240px; margin: 0 auto; padding-inline: 20px; padding-block: 40px 64px; display: grid; gap: 44px; }
+
+header { display: grid; gap: 14px; max-width: 70ch; }
+.eyebrow { font: 700 12px/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--sand); }
+h1 { font: 700 clamp(30px, 5vw, 52px)/1.05 var(--display); margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+header p { margin: 0; color: var(--mist); }
+.key { display: flex; flex-wrap: wrap; gap: 10px 22px; font-size: 14px; color: var(--mist); }
+.key b { font-weight: 700; }
+.key .lp b { color: var(--coral); }
+.key .vx b { color: var(--lagoon); }
+
+.group { display: grid; gap: 28px; }
+.group > h2 { font: 700 13px/1 var(--body); letter-spacing: .14em; text-transform: uppercase; color: var(--mist); margin: 0;
+  display: flex; align-items: center; gap: 14px; }
+.group > h2::after { content: ""; flex: 1; height: 1px; background: var(--rope); }
+
+figure { margin: 0; display: grid; gap: 12px; }
+.cap { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 16px; }
+.cap h3 { font: 700 clamp(19px, 2.4vw, 24px)/1.2 var(--display); margin: 0; text-wrap: balance; }
+.cap p { margin: 0; color: var(--mist); font-size: 14px; }
+
+.snap { display: inline-flex; border: 1px solid var(--rope); border-radius: 999px; overflow: hidden; }
+.snap button { font: 700 13px/1 var(--body); color: var(--mist); background: transparent; border: 0; padding: 9px 14px; cursor: pointer; }
+.snap button + button { border-left: 1px solid var(--rope); }
+.snap button:hover { color: var(--foam); }
+.snap button[aria-pressed="true"] { background: var(--sand); color: var(--sea); }
+.snap button:focus-visible { outline: 2px solid var(--sand); outline-offset: -2px; }
+
+.cmp { --pos: 50%; position: relative; aspect-ratio: 16 / 9; max-width: 100%; border-radius: 6px; overflow: hidden;
+  background: var(--deck); border: 1px solid var(--rope); touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.cmp img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+.cmp .top { clip-path: inset(0 calc(100% - var(--pos)) 0 0); }
+.cmp .line { position: absolute; top: 0; bottom: 0; left: var(--pos); width: 2px; margin-left: -1px; background: var(--sand);
+  box-shadow: 0 0 0 1px rgba(15, 29, 38, .35); pointer-events: none; }
+.cmp .knob { position: absolute; top: 50%; left: var(--pos); width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%;
+  background: var(--sand); color: var(--sea); display: grid; place-items: center; pointer-events: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .45); font: 700 15px/1 var(--body); letter-spacing: -.05em; }
+.cmp .tag { position: absolute; top: 12px; font: 700 12px/1 var(--body); letter-spacing: .1em; text-transform: uppercase;
+  padding: 7px 10px; border-radius: 4px; background: rgba(15, 29, 38, .78); pointer-events: none; transition: opacity .15s; }
+.cmp .tag.lp { left: 12px; color: var(--coral); }
+.cmp .tag.vx { right: 12px; color: var(--lagoon); }
+.cmp input[type=range] { touch-action: pan-y; position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; }
+.cmp:has(input:focus-visible) { outline: 2px solid var(--sand); outline-offset: 3px; }
+
+footer { color: var(--mist); font-size: 14px; display: grid; gap: 6px; max-width: 75ch; border-top: 1px solid var(--rope); padding-top: 22px; }
+footer p { margin: 0; }
+.num { font-variant-numeric: tabular-nums; }
+
+@media (max-width: 520px) {
+  .wrap { padding-inline: 16px; padding-block: 28px 48px; gap: 36px; }
+  .cmp .knob { width: 36px; height: 36px; margin: -18px 0 0 -18px; }
+  .cmp .tag { top: 8px; font-size: 11px; padding: 5px 7px; }
+  .cmp .tag.lp { left: 8px; } .cmp .tag.vx { right: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .cmp .tag { transition: none; } }
+</style>
+<meta name="description" content="One resort island in two art styles, low-poly and voxel. Drag to compare.">
+<style>*,*::before,*::after{box-sizing:border-box}html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Beach Resort Tycoon · art style test</div>
+    <h1>Low-poly or voxel?</h1>
+    <p>One island, built twice. The layout, buildings, lighting, guests and camera angle are the same in both versions; only the art style changes. Drag across each picture to compare, or use the buttons to flip between them.</p>
+    <div class="key">
+      <span class="lp"><b>Low-poly</b> flat-shaded models</span>
+      <span class="vx"><b>Voxel</b> ground in 25 cm blocks, buildings in 12.5 cm blocks</span>
+      <span>The guests are low-poly in both.</span>
+    </div>
+  </header>
+
+  <section class="group" id="golden" aria-label="Golden hour">
+    <h2>Golden hour</h2>
+  </section>
+
+  <section class="group" id="night" aria-label="Night">
+    <h2>Night</h2>
+  </section>
+
+  <footer>
+    <p>The island is 96 × 96 m with 24 buildings and 188 guests. All views use the 45° camera.</p>
+    <p class="num">Frame time on an Apple M1 Max at 1920 × 1080 with the whole island in view: low-poly 3.4 ms, voxel 5.0 ms.</p>
+    <p>Rendered in Godot 4.6. This is a test scene built for the comparison, not final game content.</p>
+  </footer>
+</div>
+
+<script>
+const views = [
+  { group: "golden", key: "wide_golden",    title: "The whole island",              note: "Zoomed right out" },
+  { group: "golden", key: "beach_golden",   title: "Main beach",                    note: "Normal play zoom" },
+  { group: "golden", key: "hotel_golden",   title: "Hotel, pool and restaurant",    note: "Normal play zoom" },
+  { group: "golden", key: "arrival_golden", title: "Arrival pier and plaza",        note: "Normal play zoom" },
+  { group: "golden", key: "villas_golden",  title: "Gardens and hillside villas",   note: "Normal play zoom" },
+  { group: "night",  key: "wide_night",     title: "The whole island",              note: "Zoomed right out" },
+  { group: "night",  key: "beach_night",    title: "Main beach",                    note: "Normal play zoom" },
+  { group: "night",  key: "arrival_night",  title: "Arrival pier and plaza",        note: "Normal play zoom" },
+];
+
+function build(v, i) {
+  const fig = document.createElement("figure");
+  const id = "cmp-" + v.key;
+  const lazy = i > 1 ? ' loading="lazy"' : "";
+  fig.innerHTML = `
+    <div class="cap">
+      <div><h3></h3><p></p></div>
+      <div class="snap" role="group" aria-label="Show">
+        <button type="button" data-to="100">Low-poly</button>
+        <button type="button" data-to="50" aria-pressed="true">Split</button>
+        <button type="button" data-to="0">Voxel</button>
+      </div>
+    </div>
+    <div class="cmp">
+      <img src="img/${v.key}_voxel.jpg" alt=""${lazy} width="1600" height="900">
+      <img class="top" src="img/${v.key}_lowpoly.jpg" alt=""${lazy} width="1600" height="900">
+      <div class="line"></div><div class="knob" aria-hidden="true">‹ ›</div>
+      <span class="tag lp">Low-poly</span><span class="tag vx">Voxel</span>
+      <input type="range" id="${id}" min="0" max="100" step="0.5" value="50">
+    </div>`;
+  fig.querySelector("h3").textContent = v.title;
+  fig.querySelector(".cap p").textContent = v.note;
+  const cmp = fig.querySelector(".cmp");
+  const range = fig.querySelector("input");
+  range.setAttribute("aria-label", `${v.title}: drag left to see more voxel, right to see more low-poly`);
+  const [lpTag, vxTag] = fig.querySelectorAll(".tag");
+  const buttons = fig.querySelectorAll(".snap button");
+  const set = (p) => {
+    p = Math.max(0, Math.min(100, p));
+    cmp.style.setProperty("--pos", p + "%");
+    range.value = p;
+    lpTag.style.opacity = p < 12 ? 0 : 1;
+    vxTag.style.opacity = p > 88 ? 0 : 1;
+    buttons.forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.to) === p)));
+  };
+  range.addEventListener("input", () => set(Number(range.value)));
+  // Pointer drag straight from where the finger or mouse lands (the range alone jumps oddly on some touch screens).
+  let dragging = false;
+  const fromEvent = (e) => { const r = cmp.getBoundingClientRect(); return (e.clientX - r.left) / r.width * 100; };
+  cmp.addEventListener("pointerdown", (e) => { dragging = true; cmp.setPointerCapture(e.pointerId); set(fromEvent(e)); });
+  cmp.addEventListener("pointermove", (e) => { if (dragging) set(fromEvent(e)); });
+  const stop = () => { dragging = false; };
+  cmp.addEventListener("pointerup", stop);
+  cmp.addEventListener("pointercancel", stop);
+  buttons.forEach(b => b.addEventListener("click", () => set(Number(b.dataset.to))));
+  set(50);
+  return fig;
+}
+
+views.forEach((v, i) => document.getElementById(v.group).appendChild(build(v, i)));
+</script>
+
+</body>
+</html>
