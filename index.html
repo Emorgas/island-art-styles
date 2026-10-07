@@ -114,6 +114,9 @@ footer p { margin: 0; }
 </div>
 
 <script>
+// Bump on every image update so browsers fetch the new pictures instead of cached ones.
+const IMAGE_VERSION = "4";
+
 const views = [
   { group: "golden", key: "wide_golden",    title: "The whole island",              note: "Zoomed right out" },
   { group: "golden", key: "beach_golden",   title: "Main beach",                    note: "Normal play zoom" },
@@ -139,8 +142,8 @@ function build(v, i) {
       </div>
     </div>
     <div class="cmp">
-      <img src="img/${v.key}_voxel.jpg" alt=""${lazy} width="1600" height="900">
-      <img class="top" src="img/${v.key}_lowpoly.jpg" alt=""${lazy} width="1600" height="900">
+      <img src="img/${v.key}_voxel.jpg?v=${IMAGE_VERSION}" alt=""${lazy} width="1600" height="900">
+      <img class="top" src="img/${v.key}_lowpoly.jpg?v=${IMAGE_VERSION}" alt=""${lazy} width="1600" height="900">
       <div class="line"></div><div class="knob" aria-hidden="true">‹ ›</div>
       <span class="tag lp">Low-poly</span><span class="tag vx">Voxel</span>
       <input type="range" id="${id}" min="0" max="100" step="0.5" value="50">
